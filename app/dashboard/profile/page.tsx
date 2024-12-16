@@ -13,6 +13,7 @@ import { DashboardLayout } from '@/components/dashboard-layout'
 import { Notification } from '@/components/notification'
 import { supabase } from '@/lib/supabase-client'
 
+
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -130,7 +131,11 @@ export default function ProfilePage() {
   }
 
   return (
-    <DashboardLayout user={user}>
+    <DashboardLayout 
+    user={user}
+    onProfileClick={() => {}} // Empty since we're already on profile page
+    onSettingsClick={() => {}}
+  >
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle>Edit Profile</CardTitle>
