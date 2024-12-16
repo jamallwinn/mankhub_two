@@ -10,10 +10,9 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { messages } = body
 
-    // Validate messages array
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
-        { error: "Messages array is required and must not be empty" },
+        { error: "Messages array is required" },
         { status: 400 }
       )
     }
@@ -30,23 +29,22 @@ export async function POST(req: Request) {
 
     if (!isValidMessage) {
       return NextResponse.json(
-        { error: "Invalid message format. Each message must have 'role' and 'content' properties" },
+        { error: "Invalid message format" },
         { status: 400 }
       )
     }
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4", // Fixed model name
+      model: "gpt-4",
       messages,
       temperature: 0.7,
-      max_tokens: 1000,
+      max_tokens: 500, // Limiting response length for quicker responses
     })
 
     return NextResponse.json(response.choices[0].message)
   } catch (error) {
     console.error('[CHAT_ERROR]', error)
     
-    // Handle specific OpenAI errors
     if (error instanceof OpenAI.APIError) {
       return NextResponse.json(
         { error: error.message },
