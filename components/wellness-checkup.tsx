@@ -4,11 +4,12 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Activity, Brain, Heart, Smile } from 'lucide-react'
 
-interface WellnessCheckupProps {
-  userId: string
-}
+// Remove the interface since we're not using any props
+// interface WellnessCheckupProps {
+//   userId: string
+// }
 
-export function WellnessCheckup({ userId }: WellnessCheckupProps) {
+export function WellnessCheckup() {  // Remove the props parameter
   const metrics = [
     {
       label: 'Physical Health',
@@ -57,4 +58,3 @@ export function WellnessCheckup({ userId }: WellnessCheckupProps) {
     </div>
   )
 }
-

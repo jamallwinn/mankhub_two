@@ -8,8 +8,6 @@ import { UsersIcon, CalendarIcon, MessageSquareIcon, BarChartIcon } from 'lucide
 
 export default function ProviderDashboard() {
   const [user, setUser] = useState<any>(null)
-  const [patients, setPatients] = useState([])
-  const [appointments, setAppointments] = useState([])
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -73,4 +71,3 @@ export default function ProviderDashboard() {
     </div>
   )
 }
-

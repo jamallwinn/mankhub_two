@@ -30,8 +30,29 @@ export function AppointmentList({ userId }: AppointmentListProps) {
 
   // Set up real-time subscription
   useEffect(() => {
+    // Define fetchAppointments inside useEffect to maintain referential stability
+    const fetchAppointments = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('appointments')
+          .select('*')
+          .eq('user_id', userId)
+          .gte('appointment_date', new Date().toISOString().split('T')[0])
+          .order('appointment_date', { ascending: true })
+          .order('appointment_time', { ascending: true })
+  
+        if (error) throw error
+        setAppointments(data || [])
+      } catch (err) {
+        console.error('Error fetching appointments:', err)
+        toast.error('Failed to load appointments')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  
     fetchAppointments()
-
+  
     // Subscribe to changes
     const channel = supabase
       .channel('appointments_changes')
@@ -48,11 +69,11 @@ export function AppointmentList({ userId }: AppointmentListProps) {
         }
       )
       .subscribe()
-
+  
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [userId])
+  }, [userId]) // Now we only need userId in the dependency array
 
   const fetchAppointments = async () => {
     try {

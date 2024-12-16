@@ -76,29 +76,30 @@ export function AppointmentModal({
 
     try {
       // First verify the user exists in voice_patients
-      const { data: patientData, error: patientError } = await supabase
-        .from('voice_patients')
-        .select('id, email')
-        .eq('id', userId)
-        .single()
+      // First verify the user exists in voice_patients
+  const { error: patientError } = await supabase
+  .from('voice_patients')
+  .select('id, email')
+  .eq('id', userId)
+  .single()
 
-      if (patientError) {
-        console.error('Error verifying patient:', patientError)
-        throw new Error('Failed to verify patient information')
-      }
+  if (patientError) {
+  console.error('Error verifying patient:', patientError)
+  throw new Error('Failed to verify patient information')
+  }
 
-      if (mode === 'create') {
-        const { data, error } = await supabase
-          .from('appointments')
-          .insert([{
-            user_id: userId,
-            provider: formData.provider,
-            appointment_date: formData.appointment_date,
-            appointment_time: formData.appointment_time,
-            appointment_type: formData.appointment_type,
-            notes: formData.notes || null
-          }])
-          .select()
+  if (mode === 'create') {
+  const { error } = await supabase
+    .from('appointments')
+    .insert([{
+      user_id: userId,
+      provider: formData.provider,
+      appointment_date: formData.appointment_date,
+      appointment_time: formData.appointment_time,
+      appointment_type: formData.appointment_type,
+      notes: formData.notes || null
+    }])
+    .select()
 
         if (error) {
           console.error('Error creating appointment:', error)

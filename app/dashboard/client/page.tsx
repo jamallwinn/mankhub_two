@@ -4,14 +4,11 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase-client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { CalendarIcon, MessageSquareIcon, ActivityIcon, BrainCircuitIcon } from 'lucide-react'
+import { CalendarIcon, MessageSquareIcon, BrainCircuitIcon } from 'lucide-react'
 
 export default function ClientDashboard() {
   const [user, setUser] = useState<any>(null)
-  const [appointments, setAppointments] = useState([])
-  const [messages, setMessages] = useState([])
-  const [activityData, setActivityData] = useState<any>(null)
-
+  
   useEffect(() => {
     const fetchUserData = async () => {
       const { data: { user } } = await supabase.auth.getUser()
@@ -50,26 +47,6 @@ export default function ClientDashboard() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Activity Tracking</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* Display activity data */}
-            {activityData ? (
-              <div>
-                <p>Steps: {activityData.steps}</p>
-                <p>Calories: {activityData.calories}</p>
-                <p>Sleep: {activityData.sleep} hours</p>
-              </div>
-            ) : (
-              <p>No activity data available</p>
-            )}
-            <Button className="w-full mt-4">
-              <ActivityIcon className="mr-2 h-4 w-4" /> View Detailed Activity
-            </Button>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
             <CardTitle>AI Health Coach</CardTitle>
           </CardHeader>
           <CardContent>
@@ -83,4 +60,3 @@ export default function ClientDashboard() {
     </div>
   )
 }
-

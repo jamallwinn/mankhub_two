@@ -37,24 +37,24 @@ export function MessageSection({ userId }: MessageSectionProps) {
   const [drUkwuId, setDrUkwuId] = useState<string | null>(null)
 
   useEffect(() => {
+    const fetchUnreadMessages = async () => {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .eq('recipient_id', userId)
+        .eq('is_read', false)
+        .order('created_at', { ascending: false })
+  
+      if (error) {
+        console.error('Error fetching unread messages:', error)
+      } else {
+        setUnreadMessages(data)
+      }
+    }
+  
     fetchUnreadMessages()
     fetchDrUkwuId()
   }, [userId])
-
-  const fetchUnreadMessages = async () => {
-    const { data, error } = await supabase
-      .from('messages')
-      .select('*')
-      .eq('recipient_id', userId)
-      .eq('is_read', false)
-      .order('created_at', { ascending: false })
-
-    if (error) {
-      console.error('Error fetching unread messages:', error)
-    } else {
-      setUnreadMessages(data)
-    }
-  }
 
   const fetchDrUkwuId = async () => {
     try {
@@ -127,11 +127,23 @@ export function MessageSection({ userId }: MessageSectionProps) {
         .from('messages')
         .update({ is_read: true })
         .eq('id', message.id)
-
+  
       if (error) {
         console.error('Error marking message as read:', error)
       } else {
-        fetchUnreadMessages()
+        // Fetch messages directly instead of calling the function
+        const { data, error: fetchError } = await supabase
+          .from('messages')
+          .select('*')
+          .eq('recipient_id', userId)
+          .eq('is_read', false)
+          .order('created_at', { ascending: false })
+  
+        if (fetchError) {
+          console.error('Error fetching unread messages:', fetchError)
+        } else {
+          setUnreadMessages(data)
+        }
       }
     }
   }
