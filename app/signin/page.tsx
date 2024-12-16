@@ -61,11 +61,15 @@ export default function SignInPage() {
         // User has completed onboarding, redirect to dashboard
         router.push('/dashboard')
       }
+    // In signin/page.tsx, update the catch block:
+
     } catch (err) {
       console.error('Sign in error:', err)
-      if (err.message === 'Invalid login credentials') {
+      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred'
+      
+      if (errorMessage === 'Invalid login credentials') {
         setError('Invalid email or password. Please try again.')
-      } else if (err.message === 'Account setup incomplete. Please complete the onboarding process.') {
+      } else if (errorMessage === 'Account setup incomplete. Please complete the onboarding process.') {
         setError('Account setup incomplete. Please complete the onboarding process.')
       } else {
         setError('An error occurred during sign in. Please try again.')
