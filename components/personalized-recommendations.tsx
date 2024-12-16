@@ -36,7 +36,7 @@ export function PersonalizedRecommendations({ userId }: { userId: string }) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-useEffect(() => {
+  // Move fetchRecommendations outside useEffect
   const fetchRecommendations = async () => {
     setIsLoading(true)
     setError(null)
@@ -71,8 +71,9 @@ useEffect(() => {
     }
   }
 
-  fetchRecommendations()
-}, [userId])
+  useEffect(() => {
+    fetchRecommendations()
+  }, [userId])
 
   return (
     <Card className="w-full">

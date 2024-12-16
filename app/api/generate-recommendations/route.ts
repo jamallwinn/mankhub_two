@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 
 // Initialize Langtrace with OpenAI instrumentation
 Langtrace.init({
-  api_key: "b9149acaa8ee9c2225611178d9456d3daba9d021d66f62809a7e0987f614b4fc",
+  api_key: process.env.LANGTRACE_API_KEY,
   batch: false,
   instrumentations: {
     openai: OpenAI,
