@@ -179,7 +179,7 @@ export default function DashboardPage() {
               <CardTitle>Wellness Report</CardTitle>
             </CardHeader>
             <CardContent>
-              <WellnessReport userId={user.id} />
+              <WellnessReport/>
             </CardContent>
           </Card>
         </div>
@@ -190,7 +190,7 @@ export default function DashboardPage() {
               <CardTitle>AI Health Assistant</CardTitle>
             </CardHeader>
             <CardContent>
-              <ChatInterface userId={user.id} />
+              <ChatInterface/>
             </CardContent>
           </Card>
 
