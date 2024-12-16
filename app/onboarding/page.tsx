@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-
 import { Textarea } from '@/components/ui/textarea'
 import { supabase } from '@/lib/supabase-client'
 import Loading from '@/components/loading'
@@ -21,6 +20,10 @@ const questions = [
   { key: 'physicalactivity', label: "Do you engage in regular physical activity?", type: 'textarea' },
   { key: 'mentalwellbeing', label: "How would you rate your mental well-being (1-10)?", type: 'number', min: 1, max: 10 }
 ]
+
+interface PatientData {
+  [key: string]: string | number | null
+}
 
 export default function OnboardingPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -49,15 +52,14 @@ export default function OnboardingPage() {
         if (fetchError && fetchError.code !== 'PGRST116') {
           console.error('Error fetching patient data:', fetchError)
         } else if (patientData) {
-          // Convert numeric strings to numbers for number inputs
-          const formattedAnswers = Object.entries(patientData).reduce((acc, [key, value]) => {
+          const formattedAnswers = Object.entries(patientData as PatientData).reduce<Record<string, string | number>>((acc, [key, value]) => {
             if (questions.find(q => q.key === key && q.type === 'number')) {
-              acc[key] = typeof value === 'string' ? parseInt(value) : Number(value) // Ensure it's converted to a number
+              acc[key] = typeof value === 'string' ? parseInt(value, 10) : Number(value ?? 0)
             } else {
-              acc[key] = String(value) // Ensure string type for non-number values
+              acc[key] = String(value ?? '')
             }
             return acc
-          }, {} as Record<string, string | number>)
+          }, {})
           setAnswers(formattedAnswers)
         }
       }
@@ -68,7 +70,7 @@ export default function OnboardingPage() {
   const handleInputChange = (value: string | number) => {
     const question = questions[currentQuestion]
     const processedValue = question.type === 'number' ? 
-      (value === '' ? '' : parseInt(value as string)) : 
+      (value === '' ? '' : parseInt(String(value), 10)) : 
       value
     
     setAnswers(prev => ({
@@ -82,7 +84,7 @@ export default function OnboardingPage() {
     if (!question) return true
 
     if (question.type === 'number') {
-      const numValue = typeof value === 'string' ? parseInt(value) : value
+      const numValue = typeof value === 'string' ? parseInt(value, 10) : value
       if (question.min !== undefined && numValue < question.min) return false
       if (question.max !== undefined && numValue > question.max) return false
     }
@@ -163,7 +165,7 @@ export default function OnboardingPage() {
       setShowThankYou(true)
     } catch (err) {
       console.error('Error saving onboarding data:', err)
-      setError(err.message || "Failed to save your information. Please try again.")
+      setError(err instanceof Error ? err.message : "Failed to save your information. Please try again.")
     } finally {
       setIsLoading(false)
     }
@@ -243,4 +245,3 @@ export default function OnboardingPage() {
     </div>
   )
 }
-
