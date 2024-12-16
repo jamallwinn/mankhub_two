@@ -68,16 +68,16 @@ export default function SignInPage() {
       }
 
       router.push('/dashboard')
-    } catch (err) {
-      console.error('Sign in error:', err)
-      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred'
+      } catch (err) {
+        console.error('Sign in error:', err)
+        const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred'
       
       if (errorMessage === 'Invalid login credentials') {
         setError('Invalid email or password. Please try again.')
       } else if (errorMessage === 'Account setup incomplete. Please complete the onboarding process.') {
         setError('Account setup incomplete. Please complete the onboarding process.')
       } else {
-        setError('An error occurred during sign in. Please try again.')
+        setError(err instanceof Error ? err.message : 'An unexpected error occurred')
       }
     } finally {
       setIsLoading(false)

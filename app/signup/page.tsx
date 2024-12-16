@@ -77,7 +77,7 @@ export default function SignUpPage() {
       }
     } catch (err) {
       console.error('Signup error:', err)
-      setError(err.message)
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
     } finally {
       setIsLoading(false)
     }
