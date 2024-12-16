@@ -20,6 +20,7 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [showSettingsPopup, setShowSettingsPopup] = useState(false);
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -134,7 +135,7 @@ export default function ProfilePage() {
     <DashboardLayout 
     user={user}
     onProfileClick={() => {}} // Empty since we're already on profile page
-    onSettingsClick={() => {}}
+    onSettingsClick={() => setShowSettingsPopup(true)}
   >
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
