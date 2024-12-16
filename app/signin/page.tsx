@@ -61,8 +61,6 @@ export default function SignInPage() {
         // User has completed onboarding, redirect to dashboard
         router.push('/dashboard')
       }
-    // In signin/page.tsx, update the catch block:
-
     } catch (err) {
       console.error('Sign in error:', err)
       const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred'
