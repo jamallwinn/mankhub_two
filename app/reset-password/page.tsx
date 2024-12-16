@@ -34,7 +34,7 @@ export default function ResetPasswordPage() {
       }, 5000)
     } catch (err) {
       console.error('Reset password error:', err)
-      setError(err.message)
+      setError(err instanceof Error ? err.message : 'An error occurred while resetting password')
     } finally {
       setIsLoading(false)
     }
