@@ -52,9 +52,9 @@ export default function OnboardingPage() {
           // Convert numeric strings to numbers for number inputs
           const formattedAnswers = Object.entries(patientData).reduce((acc, [key, value]) => {
             if (questions.find(q => q.key === key && q.type === 'number')) {
-              acc[key] = typeof value === 'string' ? parseInt(value) : value
+              acc[key] = typeof value === 'string' ? parseInt(value) : Number(value) // Ensure it's converted to a number
             } else {
-              acc[key] = value
+              acc[key] = String(value) // Ensure string type for non-number values
             }
             return acc
           }, {} as Record<string, string | number>)

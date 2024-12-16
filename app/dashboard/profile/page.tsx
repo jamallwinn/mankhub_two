@@ -135,7 +135,7 @@ export default function ProfilePage() {
     <DashboardLayout 
     user={user}
     onProfileClick={() => {}} // Empty since we're already on profile page
-    onSettingsClick={() => setShowSettingsPopup(true)}
+    onSettingsClick={() => setShowSettingsPopup(false)}
   >
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
