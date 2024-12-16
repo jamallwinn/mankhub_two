@@ -57,7 +57,7 @@ export default function UpdatePasswordPage() {
       }, 3000)
     } catch (err) {
       console.error('Update password error:', err)
-      setError(err.message)
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
     } finally {
       setIsLoading(false)
     }
