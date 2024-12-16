@@ -16,9 +16,30 @@ import { format } from 'date-fns'
 import { ProfilePopup } from '@/components/profile-popup'
 import { SettingsPopup } from '@/components/settings-popup'
 
+interface User {
+  id: string;
+  email: string;
+  firstname: string;
+  lastname: string;
+  age: number;
+  citystateofresidence: string;
+  phonenumber: string;
+  lastsocialsecurity: string;
+  familyhealthconditions: string;
+  currentmedications: string;
+  physicalactivity: string;
+  mentalwellbeing: string;
+  user_metadata: {
+    first_name: string;
+    last_name: string;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export default function DashboardPage() {
   const router = useRouter()
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [showProfilePopup, setShowProfilePopup] = useState(false)
   const [showSettingsPopup, setShowSettingsPopup] = useState(false)
@@ -72,9 +93,9 @@ export default function DashboardPage() {
             last_name: patientData.lastname
           }
         })
-      } catch (error) {
-        console.error('Error in fetchUser:', error)
-        setError(error.message)
+      } catch (err) {
+        console.error('Error in fetchUser:', err)
+        setError(err instanceof Error ? err.message : 'An unexpected error occurred')
         router.push('/signin')
       } finally {
         setIsLoading(false)
@@ -205,4 +226,3 @@ export default function DashboardPage() {
     </DashboardLayout>
   )
 }
-
